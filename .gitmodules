@@ -13,3 +13,6 @@
 [submodule "components/moog/MoogLadders"]
 	path = components/moog/MoogLadders
 	url = https://github.com/ctag-fh-kiel/MoogLadders.git
+[submodule "tapp/imgui"]
+	path = tapp/imgui
+	url = https://github.com/ocornut/imgui.git

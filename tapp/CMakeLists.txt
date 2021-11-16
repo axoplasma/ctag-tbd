@@ -40,23 +40,37 @@ file(GLOB RAPIDJSON_FILES
         ${CMAKE_SOURCE_DIR}/../components/rapidjson/rapidjson/*.h
 )
 
+# imgui
+find_package(SDL2 REQUIRED)
+set(IMGUI_DIR ${CMAKE_SOURCE_DIR}/imgui)
+set(IMGUI_SRC ${IMGUI_DIR}/backends/imgui_impl_sdl.cpp ${IMGUI_DIR}/backends/imgui_impl_opengl3.cpp ${IMGUI_DIR}/imgui.cpp ${IMGUI_DIR}/imgui_draw.cpp ${IMGUI_DIR}/imgui_tables.cpp ${IMGUI_DIR}/imgui_widgets.cpp)
+set(IMGUI_HDR ${IMGUI_DIR} ${IMGUI_DIR}/backends)
+
 #tapp
 file(GLOB SRC_FILES *.cpp *.hpp)
-add_executable(tapp ${SRC_FILES} ${CMAKE_SOURCE_DIR}/../simulator/fake-idf/esp_heap_caps.c)
+add_executable(tapp ${SRC_FILES} ${CMAKE_SOURCE_DIR}/../simulator/fake-idf/esp_heap_caps.c ${IMGUI_SRC})
 #target_link_options(tapp PRIVATE -static-libgcc -static-libstdc++)
 
 if(WIN32)
     target_link_libraries(tapp -static simple-web-server)
     target_link_libraries(tapp -static ${Boost_LIBRARIES})
     target_link_libraries(tapp -static ws2_32 wsock32)
+    target_link_libraries(tapp dl)
 elseif(APPLE)
     target_link_libraries(tapp simple-web-server)
     target_link_libraries(tapp ${Boost_LIBRARIES})
+    target_link_options(tapp PRIVATE
+            "SHELL:-framework OpenGL"
+            "SHELL:-framework Cocoa"
+            "SHELL:-framework IOKit"
+            "SHELL:-framework CoreVideo")
 else() #linux etc?!
     target_link_libraries(tapp simple-web-server)
     target_link_libraries(tapp ${Boost_LIBRARIES})
+    target_link_libraries(tapp -static gdi32 opengl32 imm32)
 endif()
-
+target_include_directories(tapp PRIVATE ${IMGUI_HDR} ${SDL2_INCLUDE_DIRS})
+target_link_libraries(tapp ${SDL2_LIBRARIES} )
 target_include_directories(tapp PRIVATE ${Boost_INCLUDE_DIR})
 target_include_directories(tapp PRIVATE ${CMAKE_SOURCE_DIR}/../components/rapidjson)
 target_include_directories(tapp PRIVATE ${CMAKE_SOURCE_DIR}/../simulator/fake-idf)
