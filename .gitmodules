@@ -19,6 +19,3 @@
 [submodule "tapp/libserialport"]
 	path = tapp/libserialport
 	url = https://github.com/sigrokproject/libserialport.git
-[submodule "tapp/ImGui-Addons"]
-	path = tapp/ImGui-Addons
-	url = https://github.com/gallickgunner/ImGui-Addons.git

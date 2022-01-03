@@ -1,0 +1,1 @@
+.\flashtbd\esptool -p %1 -b 1500000 --before default_reset --after hard_reset --chip esp32 write_flash --flash_mode dio --flash_freq 80m --flash_size 16MB 0x8000 flashtbd\partition-table.bin 0xd000 flashtbd\ota_data_initial.bin 0x1000 flashtbd\bootloader.bin 0x10000 flashtbd\ctag-tbd.bin 0x610000 flashtbd\storage.bin

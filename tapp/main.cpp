@@ -21,22 +21,21 @@ respective component folders / files if different from this license.
 
 //  #define GLEW_STATIC true  // MB 20210612 ??? https://coderedirect.com/questions/448523/receiving-undefined-references-to-various-windows-libraries-when-compiling-with
 #include <boost/program_options.hpp>
+#include <libserialport.h>
 #include <iostream>
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
 #include "imgui_impl_opengl3.h"
 #include <stdio.h>
-// #include <setupapi.h>   // MB 20211206 added extern "C" in this includefile, to fix name-mangeling errors!
-#include "SDL2/include/SDL2/SDL.h" // Path adapted MB 20211206
-
-// --- Libusb crossplatform USB library to get list of devices and ports for selection ---
-
+#include <SDL.h>
+#include <chrono>
+#include <thread>
 
 #if defined(IMGUI_IMPL_OPENGL_ES2)
 #include <SDL_opengles2.h>
 #else
 
-#include "SDL2/include/SDL2/SDL_opengl.h"   // Path adapted MB 20211206
+#include <SDL_opengl.h>
 
 #endif
 
@@ -51,25 +50,19 @@ namespace po = boost::program_options;
 #define IOCTL_USB_GET_ROOT_HUB_NAME 0x220408            // MB 20211208 Windows USB Device constant
 #define IOCTL_USB_GET_NODE_CONNECTION_NAME 0x220414     // MB 20211208 Windows USB Device constant
 
-#include "../libsererial/libserialport.h"
-#include "../libsererial/windows.c" // ### Substitute with CMake-directive later!
-#include "../libsererial/serialport.c" // ### Substitute with CMake-directive later!
-#include "../libsererial/timing.c" // ### Substitute with CMake-directive later!
-
-#include "../FileBrowser/ImGuiFileBrowser.h"  // ### Changed patch to dirent.h in there!
-#include "../FileBrowser/ImGuiFileBrowser.cpp" // ### Substitute with CMake-directive later!
+#include <ImGuiFileBrowser.h>
 
 #include <string>
 #include <vector>
 
 
 #include <stdio.h>
-#include <process.h>
-#include <shellapi.h>
 
 #ifdef _WIN32
 #define BOOST_USE_WINDOWS_H 1
 // ### #include <windows.h>
+#include <process.h>
+#include <shellapi.h>
 #endif
 
 #include <boost/asio.hpp>
@@ -121,7 +114,12 @@ int main(int ac, char **av) {
 
     static const char *local_ports[] = {"1010", "2020", "3030", "4040", "6060"};
     static const char *current_port = "3030";
-    static char sample_package[1024] = "./flashtbd/sample-rom.tbd";
+#if __WIN64__
+    static char sample_package[4096] = "./flashtbd/sample-rom.tbd";
+#elif __APPLE__
+    static char sample_package[4096] = "./bin/sample-rom.tbd";
+#endif
+
     // --- Boost-Library "process" related stuff ---
     ipstream pipe_stream;
     bool start_tapp = false;
@@ -133,7 +131,7 @@ int main(int ac, char **av) {
     bool select_sample_pack = false;
     // --- IO stuff ---
     char txt_buf[128];
-    static char cmd_buf[128];
+    static char cmd_buf[4096];
 
     // --- Parameters for tapp ---
     WebServer *webServerp = NULL;
@@ -249,6 +247,7 @@ int main(int ac, char **av) {
         // Main loop
         bool done = false;
         while (!done) {
+            io.DeltaTime = 1.f / 30.f; // frame rate
             // Poll and handle events (inputs, window resize, etc.)
             // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
             // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application.
@@ -377,10 +376,20 @@ int main(int ac, char **av) {
                                     if (flash_mode == 1) {
                                         if (ok_to_overwrite_dialogue())    // Contains modal "Overwrite?" popup-dialogue!
                                         {
-                                            sprintf(cmd_buf, ".\\flashtbd\\esptool_erasetbd.bat %s", port_name);
+
                                             erase_running = true;
-                                            ShellExecute(0, "open", ".\\flashtbd\\esptool_erasetbd.bat", port_name, 0,
-                                                         SW_SHOWDEFAULT);
+#ifdef __WIN64__
+                                            sprintf(cmd_buf, ".\\flashtbd\\esptool_erasetbd.bat %s", port_name);
+                                            ShellExecute(0, "open", ".\\flashtbd\\esptool_erasetbd.bat", port_name, 0, SW_SHOWDEFAULT);
+#elif __APPLE__
+                                            sprintf(cmd_buf, "bin/esptool/esptoolmac -p %s -b 460800 erase_flash", port_name);
+                                            auto c = child((char*)cmd_buf, std_out > pipe_stream);
+                                            std::cout << "Erasing..." << std::endl;
+                                            c.wait();
+                                            std::cout << "Done, restart tapp!" << std::endl;
+                                            //tapp_child = new child((char *) cmd_buf, std_out > pipe_stream);
+#else
+#endif
                                         }
                                     }
                                     sprintf(txt_buf, "FLASH Firmware TBD [%s]", description);
@@ -393,7 +402,12 @@ int main(int ac, char **av) {
                                     if (flash_mode == 2) {
                                         if (ok_to_overwrite_dialogue())    // Contains modal "Overwrite?" popup-dialogue!
                                         {
+#ifdef __WIN64__
                                             sprintf(cmd_buf, ".\\flashtbd\\esptool_flashtbd.bat %s", port_name);
+#elif __APPLE__
+                                            sprintf(cmd_buf, "bin/esptool/esptoolmac -p %s -b 460800 --before default_reset --after hard_reset --chip esp32 write_flash --flash_mode dio --flash_freq 80m --flash_size 16MB 0x8000 bin/partition-table.bin 0xd000 bin/ota_data_initial.bin 0x1000 bin/bootloader.bin 0x10000 bin/ctag-tbd.bin 0x610000 bin/storage.bin", port_name);
+#else
+#endif
                                             tapp_child = new child((char *) cmd_buf, std_out > pipe_stream);
                                         }
                                     }
@@ -408,12 +422,17 @@ int main(int ac, char **av) {
                                     if (flash_mode == 3) {
                                         if (ok_to_overwrite_dialogue())    // Contains modal "Overwrite?" popup-dialogue!
                                         {
+#ifdef __WIN64__
                                             if (boost::filesystem::exists(
                                                     "./flashtbd/usersamples.tmp"))    // no copy_file() "ignore overwrite", so we delete first - using the extension *.tmp prevents us from having users select previous versions and thus get copy errors after delete ;-)
                                                 boost::filesystem::remove("./flashtbd/usersamples.tmp");
                                             boost::filesystem::copy_file(sample_package, "./flashtbd/usersamples.tmp");
                                             sprintf(cmd_buf, ".\\flashtbd\\esptool_flashsample.bat %s %s", port_name,
                                                     ".\\flashtbd\\usersamples.tmp"); // ### sample_package);
+#elif __APPLE__
+                                            sprintf(cmd_buf, "bin/esptool/esptoolmac -p %s -b 460800 write_flash --flash_mode dio -fs detect 0xB00000 %s", port_name, sample_package);
+#else
+#endif
                                             tapp_child = new child((char *) cmd_buf, std_out > pipe_stream);
                                         }
                                     }
@@ -426,7 +445,7 @@ int main(int ac, char **av) {
                                         webServerp->Start(iPort, port_name);
                                         static char http_buf[BUFSIZ];
                                         sprintf(http_buf, "http://localhost:%s/", current_port);
-                                        ShellExecute(0, "open", http_buf, cmd_buf, 0, SW_SHOWDEFAULT);
+                                        //mShellExecute(0, "open", http_buf, cmd_buf, 0, SW_SHOWDEFAULT);
                                         tapp_running = true;
                                     }
                                 } else  // Terminal application running?
@@ -474,6 +493,8 @@ int main(int ac, char **av) {
             glClear(GL_COLOR_BUFFER_BIT);
             ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
             SDL_GL_SwapWindow(window);
+            // limit frame rate
+            std::this_thread::sleep_for(std::chrono::milliseconds(50));
         }
 
         // Cleanup
