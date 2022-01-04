@@ -80,7 +80,7 @@ else() #linux etc?!
     target_link_libraries(tapp -static gdi32 opengl32 imm32)
 endif()
 target_include_directories(tapp PRIVATE ${IMGUI_HDR} ${SDL2_INCLUDE_DIRS})
-target_link_libraries(tapp ${SDL2_LIBRARIES} )
+target_link_libraries(tapp ${SDL2_LIBRARIES})
 target_link_libraries(tapp libserialport)
 target_include_directories(tapp PRIVATE ${Boost_INCLUDE_DIR})
 target_include_directories(tapp PRIVATE ${CMAKE_SOURCE_DIR}/../components/rapidjson)

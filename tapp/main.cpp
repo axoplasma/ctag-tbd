@@ -21,6 +21,7 @@ respective component folders / files if different from this license.
 
 //  #define GLEW_STATIC true  // MB 20210612 ??? https://coderedirect.com/questions/448523/receiving-undefined-references-to-various-windows-libraries-when-compiling-with
 #include <boost/program_options.hpp>
+#include <boost/dll.hpp>
 #include <libserialport.h>
 #include <iostream>
 #include "imgui.h"
@@ -112,12 +113,18 @@ int main(int ac, char **av) {
     po::options_description desc(string(av[0]) + " options");
     po::variables_map vm;
 
+    auto base_path {boost::dll::program_location().parent_path()};
+    boost::filesystem::current_path(base_path);
+
     static const char *local_ports[] = {"1010", "2020", "3030", "4040", "6060"};
     static const char *current_port = "3030";
 #if __WIN64__
     static char sample_package[4096] = "./flashtbd/sample-rom.tbd";
 #elif __APPLE__
-    static char sample_package[4096] = "./bin/sample-rom.tbd";
+    auto sample_rom_path = base_path;
+    sample_rom_path.append("/bin/sample-rom.tbd");
+    static char sample_package[4096];
+    strcpy(sample_package, sample_rom_path.c_str());
 #endif
 
     // --- Boost-Library "process" related stuff ---

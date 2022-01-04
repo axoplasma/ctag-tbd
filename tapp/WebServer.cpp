@@ -23,6 +23,7 @@ respective component folders / files if different from this license.
 //#include "SimSPManager.hpp"
 #include <algorithm>
 #include <boost/filesystem.hpp>
+#include <boost/dll.hpp>
 #include <fstream>
 #include <vector>
 #include <boost/property_tree/json_parser.hpp>
@@ -35,6 +36,8 @@ using namespace rapidjson;
 using namespace boost::property_tree;
 
 void WebServer::Start(const unsigned short port, const string &serialPort) {
+
+
     // HTTP-server at port 8080 using 1 thread
     // Unless you do more heavy non-threaded processing in the resources,
     // 1 thread is usually faster than several threads
