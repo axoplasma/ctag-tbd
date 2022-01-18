@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(tapp)
 
+set(SDL2_DIR ${CMAKE_SOURCE_DIR}/SDL/dist/lib/cmake/SDL2)
+
 # rapidjson stuff
 add_definitions(
         -DRAPIDJSON_ALLOCATOR_DEFAULT_CHUNK_CAPACITY=4096 # rapidjson
@@ -69,11 +71,14 @@ if(WIN32)
 elseif(APPLE)
     target_link_libraries(tapp simple-web-server)
     target_link_libraries(tapp ${Boost_LIBRARIES})
+    target_link_libraries(tapp iconv)
     target_link_options(tapp PRIVATE
             "SHELL:-framework OpenGL"
             "SHELL:-framework Cocoa"
             "SHELL:-framework IOKit"
-            "SHELL:-framework CoreVideo")
+            "SHELL:-framework CoreVideo"
+            "SHELL:-framework Carbon"
+            "SHELL:-framework ForceFeedback")
 else() #linux etc?!
     target_link_libraries(tapp simple-web-server)
     target_link_libraries(tapp ${Boost_LIBRARIES})

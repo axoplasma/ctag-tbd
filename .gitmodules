@@ -19,3 +19,6 @@
 [submodule "tapp/libserialport"]
 	path = tapp/libserialport
 	url = https://github.com/sigrokproject/libserialport.git
+[submodule "tapp/SDL"]
+	path = tapp/SDL
+	url = https://github.com/libsdl-org/SDL.git
