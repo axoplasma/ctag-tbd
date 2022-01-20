@@ -29,6 +29,7 @@ respective component folders / files if different from this license.
 #include "imgui_impl_opengl3.h"
 #include <stdio.h>
 #include <SDL.h>
+#include <cstdlib>
 #include <chrono>
 #include <thread>
 
@@ -451,8 +452,13 @@ int main(int ac, char **av) {
                                         iPort = atoi(current_port);
                                         webServerp->Start(iPort, port_name);
                                         static char http_buf[BUFSIZ];
-                                        sprintf(http_buf, "http://localhost:%s/", current_port);
-                                        //mShellExecute(0, "open", http_buf, cmd_buf, 0, SW_SHOWDEFAULT);
+                                        sprintf(http_buf, "open http://localhost:%s/", current_port);
+
+#ifdef __APPLE__
+                                        std::system(http_buf);
+#else
+                                        mShellExecute(0, "open", http_buf, cmd_buf, 0, SW_SHOWDEFAULT);
+#endif
                                         tapp_running = true;
                                     }
                                 } else  // Terminal application running?
