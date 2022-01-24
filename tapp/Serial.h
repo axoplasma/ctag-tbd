@@ -11,7 +11,8 @@ public:
     Serial(std::string port, unsigned int baud_rate)
     : io(), serial(io,port)
     {
-        serial.set_option(boost::asio::serial_port_base::baud_rate(baud_rate));
+        serial.set_option(boost::asio::serial_port::baud_rate(baud_rate));
+        serial.set_option(boost::asio::serial_port::flow_control(boost::asio::serial_port::flow_control::none));
     }
 
     void writeString(std::string s)

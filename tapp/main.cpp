@@ -171,10 +171,10 @@ int main(int ac, char **av) {
 
     if (noGui) {
         char input;
-        std::cin.get(input);
 
         webServerp = new WebServer;
         webServerp->Start(iPort, serialPort);
+        std::cin.get(input);
     } else {
         ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
         // Setup SDL
@@ -352,12 +352,17 @@ int main(int ac, char **av) {
                     for (int i = 0; port_list[i] != NULL; i++) {
                         struct sp_port *port = port_list[i];   // Get the name of the port.
                         char *port_name = sp_get_port_name(port);
-
+                        string pname {port_name};
+#ifdef __APPLE__
+                        // does port name include usbserial? if not-> don't list!
+                        if(pname.find("usbserial") == std::string::npos) continue;
+#endif
 
                         ImGui::TextColored(ImVec4(0, 1, 0, 1), "Port available: %s", port_name);
                         char *description = sp_get_port_description(port);
                         int transport_type = sp_get_port_transport(port);
-                        if (transport_type == SP_TRANSPORT_USB) {
+                        //std::cerr << "Transport type " << transport_type << std::endl;
+                        if (1){//transport_type == SP_TRANSPORT_USB || SP_TRANSPORT_NATIVE) {
                             if ((tapp_child && !tapp_child->running()) || erase_running) {
                                 if (!erase_running) {
                                     ImGui::TextColored(ImVec4(1, 0, 0, 1),
@@ -452,11 +457,12 @@ int main(int ac, char **av) {
                                         iPort = atoi(current_port);
                                         webServerp->Start(iPort, port_name);
                                         static char http_buf[BUFSIZ];
-                                        sprintf(http_buf, "open http://localhost:%s/", current_port);
 
 #ifdef __APPLE__
+                                        sprintf(http_buf, "open http://localhost:%s/ &", current_port);
                                         std::system(http_buf);
 #else
+                                        sprintf(http_buf, "open http://localhost:%s/", current_port);
                                         mShellExecute(0, "open", http_buf, cmd_buf, 0, SW_SHOWDEFAULT);
 #endif
                                         tapp_running = true;
