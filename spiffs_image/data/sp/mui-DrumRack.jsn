@@ -24,64 +24,70 @@
           "name": "Level",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "ab_pan",
           "name": "Pan",
           "type": "int",
           "min": -4095,
-          "max": 4095,
-          "step": 1
+          "max": 4095
+        },
+        {
+          "id": "ab_rs",
+          "name": "Reverb Send",
+          "type": "int",
+          "min": 0,
+          "max": 4095
+        },
+        {
+          "id": "ab_ds",
+          "name": "Delay Send",
+          "type": "int",
+          "min": 0,
+          "max": 4095
         },
         {
           "id": "ab_accent",
           "name": "Accent",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "ab_f0",
           "name": "Base Frequency",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "ab_tone",
           "name": "Tone",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "ab_decay",
           "name": "Decay",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "ab_a_fm",
           "name": "Attack FM",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "ab_s_fm",
           "name": "Self FM",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         }
       ]
     },
@@ -105,72 +111,77 @@
           "name": "Level",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "db_pan",
           "name": "Pan",
           "type": "int",
           "min": -4095,
-          "max": 4095,
-          "step": 1
+          "max": 4095
+        },
+        {
+          "id": "db_rs",
+          "name": "Reverb Send",
+          "type": "int",
+          "min": 0,
+          "max": 4095
+        },
+        {
+          "id": "db_ds",
+          "name": "Delay Send",
+          "type": "int",
+          "min": 0,
+          "max": 4095
         },
         {
           "id": "db_accent",
           "name": "Accent",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "db_f0",
           "name": "Base Frequency",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "db_tone",
           "name": "Tone",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "db_decay",
           "name": "Decay",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "db_dirty",
           "name": "Dirtiness",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "db_fm_env",
           "name": "FM Envelope",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "db_fm_dcy",
           "name": "FM Decay",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         }
       ]
     },
@@ -194,56 +205,63 @@
           "name": "Level",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "as_pan",
           "name": "Pan",
           "type": "int",
           "min": -4095,
-          "max": 4095,
-          "step": 1
+          "max": 4095
+        },
+        {
+          "id": "as_rs",
+          "name": "Reverb Send",
+          "type": "int",
+          "min": 0,
+          "max": 4095
+        },
+        {
+          "id": "as_ds",
+          "name": "Delay Send",
+          "type": "int",
+          "min": 0,
+          "max": 4095
         },
         {
           "id": "as_accent",
           "name": "Accent",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "as_f0",
           "name": "Base Frequency",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "as_tone",
           "name": "Tone",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "as_decay",
           "name": "Decay",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "as_a_spy",
           "name": "Snappy",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         }
       ]
     },
@@ -267,16 +285,28 @@
           "name": "Level",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "ds_pan",
           "name": "Pan",
           "type": "int",
           "min": -4095,
-          "max": 4095,
-          "step": 1
+          "max": 4095
+        },
+        {
+          "id": "ds_rs",
+          "name": "Reverb Send",
+          "type": "int",
+          "min": 0,
+          "max": 4095
+        },
+        {
+          "id": "ds_ds",
+          "name": "Delay Send",
+          "type": "int",
+          "min": 0,
+          "max": 4095
         },
         {
           "id": "ds_accent",
@@ -291,32 +321,28 @@
           "name": "Base Frequency",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "ds_fm_amt",
           "name": "FM Amount",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "ds_decay",
           "name": "Decay",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "ds_spy",
           "name": "Snappy",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         }
       ]
     },
@@ -340,56 +366,63 @@
           "name": "Level",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "hh1_pan",
           "name": "Pan",
           "type": "int",
           "min": -4095,
-          "max": 4095,
-          "step": 1
+          "max": 4095
+        },
+        {
+          "id": "hh1_rs",
+          "name": "Reverb Send",
+          "type": "int",
+          "min": 0,
+          "max": 4095
+        },
+        {
+          "id": "hh1_ds",
+          "name": "Delay Send",
+          "type": "int",
+          "min": 0,
+          "max": 4095
         },
         {
           "id": "hh1_accent",
           "name": "Accent",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "hh1_f0",
           "name": "Base Frequency",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "hh1_tone",
           "name": "Tone",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "hh1_decay",
           "name": "Decay",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "hh1_noise",
           "name": "Noise Level",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         }
       ]
     },
@@ -413,56 +446,63 @@
           "name": "Level",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "hh2_pan",
           "name": "Pan",
           "type": "int",
           "min": -4095,
-          "max": 4095,
-          "step": 1
+          "max": 4095
+        },
+        {
+          "id": "hh2_rs",
+          "name": "Reverb Send",
+          "type": "int",
+          "min": 0,
+          "max": 4095
+        },
+        {
+          "id": "hh2_ds",
+          "name": "Delay Send",
+          "type": "int",
+          "min": 0,
+          "max": 4095
         },
         {
           "id": "hh2_accent",
           "name": "Accent",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "hh2_f0",
           "name": "Base Frequency",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "hh2_tone",
           "name": "Tone",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "hh2_decay",
           "name": "Decay",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "hh2_noise",
           "name": "Noise Level",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         }
       ]
     },
@@ -486,56 +526,63 @@
           "name": "Level",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "s1_pan",
           "name": "Pan",
           "type": "int",
           "min": -4095,
-          "max": 4095,
-          "step": 1
+          "max": 4095
+        },
+        {
+          "id": "s1_rs",
+          "name": "Reverb Send",
+          "type": "int",
+          "min": 0,
+          "max": 4095
+        },
+        {
+          "id": "s1_ds",
+          "name": "Delay Send",
+          "type": "int",
+          "min": 0,
+          "max": 4095
         },
         {
           "id": "s1_speed",
           "name": "Speed / Tune",
           "type": "int",
           "min": -4095,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "s1_bank",
           "name": "Bank",
           "type": "int",
           "min": 0,
-          "max": 31,
-          "step": 1
+          "max": 31
         },
         {
           "id": "s1_slice",
           "name": "Slice",
           "type": "int",
           "min": 0,
-          "max": 31,
-          "step": 1
+          "max": 31
         },
         {
           "id": "s1_start",
           "name": "Start",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "s1_end",
           "name": "End",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "s1_lp",
@@ -552,40 +599,35 @@
           "name": "End",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "s1_atk",
           "name": "Attack",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "s1_dcy",
           "name": "Decay",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "s1_eg2fm",
           "name": "EG FM Amount",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "s1_brr",
           "name": "Bit Reduction",
           "type": "int",
           "min": 0,
-          "max": 14,
-          "step": 1
+          "max": 14
         }
       ]
     },
@@ -609,56 +651,63 @@
           "name": "Level",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "s2_pan",
           "name": "Pan",
           "type": "int",
           "min": -4095,
-          "max": 4095,
-          "step": 1
+          "max": 4095
+        },
+        {
+          "id": "s2_rs",
+          "name": "Reverb Send",
+          "type": "int",
+          "min": 0,
+          "max": 4095
+        },
+        {
+          "id": "s2_ds",
+          "name": "Delay Send",
+          "type": "int",
+          "min": 0,
+          "max": 4095
         },
         {
           "id": "s2_speed",
           "name": "Speed / Tune",
           "type": "int",
           "min": -4095,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "s2_bank",
           "name": "Bank",
           "type": "int",
           "min": 0,
-          "max": 31,
-          "step": 1
+          "max": 31
         },
         {
           "id": "s2_slice",
           "name": "Slice",
           "type": "int",
           "min": 0,
-          "max": 31,
-          "step": 1
+          "max": 31
         },
         {
           "id": "s2_start",
           "name": "Start",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "s2_end",
           "name": "End",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "s2_lp",
@@ -675,40 +724,35 @@
           "name": "End",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "s2_atk",
           "name": "Attack",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "s2_dcy",
           "name": "Decay",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "s2_eg2fm",
           "name": "EG FM Amount",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "s2_brr",
           "name": "Bit Reduction",
           "type": "int",
           "min": 0,
-          "max": 14,
-          "step": 1
+          "max": 14
         }
       ]
     },
@@ -732,56 +776,63 @@
           "name": "Level",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "s3_pan",
           "name": "Pan",
           "type": "int",
           "min": -4095,
-          "max": 4095,
-          "step": 1
+          "max": 4095
+        },
+        {
+          "id": "s3_rs",
+          "name": "Reverb Send",
+          "type": "int",
+          "min": 0,
+          "max": 4095
+        },
+        {
+          "id": "s3_ds",
+          "name": "Delay Send",
+          "type": "int",
+          "min": 0,
+          "max": 4095
         },
         {
           "id": "s3_speed",
           "name": "Speed / Tune",
           "type": "int",
           "min": -4095,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "s3_bank",
           "name": "Bank",
           "type": "int",
           "min": 0,
-          "max": 31,
-          "step": 1
+          "max": 31
         },
         {
           "id": "s3_slice",
           "name": "Slice",
           "type": "int",
           "min": 0,
-          "max": 31,
-          "step": 1
+          "max": 31
         },
         {
           "id": "s3_start",
           "name": "Start",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "s3_end",
           "name": "End",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "s3_lp",
@@ -798,40 +849,35 @@
           "name": "End",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "s3_atk",
           "name": "Attack",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "s3_dcy",
           "name": "Decay",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "s3_eg2fm",
           "name": "EG FM Amount",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "s3_brr",
           "name": "Bit Reduction",
           "type": "int",
           "min": 0,
-          "max": 14,
-          "step": 1
+          "max": 14
         }
       ]
     },
@@ -855,56 +901,63 @@
           "name": "Level",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "s4_pan",
           "name": "Pan",
           "type": "int",
           "min": -4095,
-          "max": 4095,
-          "step": 1
+          "max": 4095
+        },
+        {
+          "id": "s4_rs",
+          "name": "Reverb Send",
+          "type": "int",
+          "min": 0,
+          "max": 4095
+        },
+        {
+          "id": "s4_ds",
+          "name": "Delay Send",
+          "type": "int",
+          "min": 0,
+          "max": 4095
         },
         {
           "id": "s4_speed",
           "name": "Speed / Tune",
           "type": "int",
           "min": -4095,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "s4_bank",
           "name": "Bank",
           "type": "int",
           "min": 0,
-          "max": 31,
-          "step": 1
+          "max": 31
         },
         {
           "id": "s4_slice",
           "name": "Slice",
           "type": "int",
           "min": 0,
-          "max": 31,
-          "step": 1
+          "max": 31
         },
         {
           "id": "s4_start",
           "name": "Start",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "s4_end",
           "name": "End",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "s4_lp",
@@ -921,40 +974,110 @@
           "name": "End",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "s4_atk",
           "name": "Attack",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "s4_dcy",
           "name": "Decay",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "s4_eg2fm",
           "name": "EG FM Amount",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "s4_brr",
           "name": "Bit Reduction",
           "type": "int",
           "min": 0,
-          "max": 14,
-          "step": 1
+          "max": 14
+        }
+      ]
+    },
+    {
+      "id": "r_group",
+      "name": "Reverb",
+      "type": "group",
+      "params": [
+        {
+          "id": "r_mute",
+          "name": "Mute",
+          "type": "bool"
+        },
+        {
+          "id": "r_time",
+          "name": "Time",
+          "type": "int",
+          "min": 0,
+          "max": 4095
+        },
+        {
+          "id": "r_lev",
+          "name": "Level",
+          "type": "int",
+          "min": 0,
+          "max": 4095
+        },
+        {
+          "id": "r_lp",
+          "name": "Damping",
+          "type": "int",
+          "min": 0,
+          "max": 4095
+        },
+        {
+          "id": "r_diff",
+          "name": "Diffusion",
+          "type": "int",
+          "min": 0,
+          "max": 4095
+        }
+      ]
+    },
+    {
+      "id": "d_group",
+      "name": "Delay",
+      "type": "group",
+      "params": [
+        {
+          "id": "d_time",
+          "name": "Time",
+          "type": "int",
+          "min": 0,
+          "max": 4095
+        },
+        {
+          "id": "d_fb",
+          "name": "Feedback",
+          "type": "int",
+          "min": 0,
+          "max": 4095
+        },
+        {
+          "id": "d_lp",
+          "name": "LPF",
+          "type": "int",
+          "min": 0,
+          "max": 4095
+        },
+        {
+          "id": "d_width",
+          "name": "Width",
+          "type": "int",
+          "min": 0,
+          "max": 4095
         }
       ]
     },
@@ -968,16 +1091,14 @@
           "name": "Threshold",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "c_ratio",
           "name": "Ratio",
           "type": "int",
           "min": 0,
-          "max": 4095,
-          "step": 1
+          "max": 4095
         },
         {
           "id": "c_atk",

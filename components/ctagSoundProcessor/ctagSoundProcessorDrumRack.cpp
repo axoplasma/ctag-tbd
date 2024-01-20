@@ -1,9 +1,9 @@
 #include "ctagSoundProcessorDrumRack.hpp"
+#include "esp_heap_caps.h"
 
 using namespace CTAG::SP;
 
 void ctagSoundProcessorDrumRack::Process(const ProcessData &data) {
-
     // Analog Bass Drum
     MK_BOOL_PAR(bABMute, ab_mute)
     MK_BOOL_PAR(bABTrig, ab_trigger)
@@ -22,6 +22,8 @@ void ctagSoundProcessorDrumRack::Process(const ProcessData &data) {
     MK_FLT_PAR_ABS(fABDecay, ab_decay, 4095.f, 1.f)
     MK_FLT_PAR_ABS_MIN_MAX(fABAfm, ab_a_fm, 4095.f, 0.f, 100.f)
     MK_FLT_PAR_ABS_MIN_MAX(fABSfm, ab_s_fm, 4095.f, 0.f, 100.f)
+    MK_FLT_PAR_ABS(fABRevSend, ab_rs, 4095.f, 2.f)
+    fABRevSend *= fABRevSend;
 
     if(!bABMute) abd.Render(
             false,
@@ -55,6 +57,8 @@ void ctagSoundProcessorDrumRack::Process(const ProcessData &data) {
     MK_FLT_PAR_ABS(fASTone, as_tone, 4095.f, 1.f)
     MK_FLT_PAR_ABS(fASDecay, as_decay, 4095.f, 1.f)
     MK_FLT_PAR_ABS(fASAspy, as_a_spy, 4095.f, 1.f)
+    MK_FLT_PAR_ABS(fASRevSend, as_rs, 4095.f, 2.f)
+    fASRevSend *= fASRevSend;
 
     if(!bASMute) asd.Render(
             false,
@@ -89,6 +93,8 @@ void ctagSoundProcessorDrumRack::Process(const ProcessData &data) {
     MK_FLT_PAR_ABS(fDBDirty, db_dirty, 4095.f, 5.f)
     MK_FLT_PAR_ABS(fDBFmEnv, db_fm_env, 4095.f, 5.f)
     MK_FLT_PAR_ABS(fDBFmDcy, db_fm_dcy, 4095.f, 4.f)
+    MK_FLT_PAR_ABS(fDBRevSend, db_rs, 4095.f, 2.f)
+    fDBRevSend *= fDBRevSend;
 
     if(!bDBMute) dbd.Render(
             false,
@@ -123,6 +129,8 @@ void ctagSoundProcessorDrumRack::Process(const ProcessData &data) {
     MK_FLT_PAR_ABS(fDSFmAmt, ds_fm_amt, 4095.f, 1.5f)
     MK_FLT_PAR_ABS(fDSDecay, ds_decay, 4095.f, 1.f)
     MK_FLT_PAR_ABS(fDSSpy, ds_spy, 4095.f, 1.f)
+    MK_FLT_PAR_ABS(fDSRevSend, ds_rs, 4095.f, 2.f)
+    fDSRevSend *= fDSRevSend;
 
     if(!bDSMute) dsd.Render(
             false,
@@ -155,6 +163,8 @@ void ctagSoundProcessorDrumRack::Process(const ProcessData &data) {
     MK_FLT_PAR_ABS(fHH1Tone, hh1_tone, 4095.f, 1.f)
     MK_FLT_PAR_ABS(fHH1Decay, hh1_decay, 4095.f, 1.f)
     MK_FLT_PAR_ABS(fHH1Noise, hh1_noise, 4095.f, 1.f)
+    MK_FLT_PAR_ABS(fHH1RevSend, hh1_rs, 4095.f, 2.f)
+    fHH1RevSend *= fHH1RevSend;
 
     if(!bHH1Mute) hh1.Render(
             false,
@@ -189,6 +199,8 @@ void ctagSoundProcessorDrumRack::Process(const ProcessData &data) {
     MK_FLT_PAR_ABS(fHH2Tone, hh2_tone, 4095.f, 1.f)
     MK_FLT_PAR_ABS(fHH2Decay, hh2_decay, 4095.f, 1.f)
     MK_FLT_PAR_ABS(fHH2Noise, hh2_noise, 4095.f, 1.f)
+    MK_FLT_PAR_ABS(fHH2RevSend, hh2_rs, 4095.f, 2.f)
+    fHH2RevSend *= fHH2RevSend;
 
     if(!bHH2Mute) hh2.Render(
             false,
@@ -241,6 +253,8 @@ void ctagSoundProcessorDrumRack::Process(const ProcessData &data) {
     MK_INT_PAR_ABS(iS1Brr, s1_brr, 16)
     CONSTRAIN(iS1Brr, 0, 14)
     rompler[0].params.bitReduction = iS1Brr;
+    MK_FLT_PAR_ABS(fS1RevSend, s1_rs, 4095.f, 2.f)
+    fS1RevSend *= fS1RevSend;
     if(!bMuteS1) rompler[0].Process(s1_out, 32);
     else{
         memset(s1_out, 0, 32*sizeof(float));
@@ -280,6 +294,8 @@ void ctagSoundProcessorDrumRack::Process(const ProcessData &data) {
     MK_INT_PAR_ABS(iS2Brr, s2_brr, 16)
     CONSTRAIN(iS2Brr, 0, 14)
     rompler[1].params.bitReduction = iS2Brr;
+    MK_FLT_PAR_ABS(fS2RevSend, s2_rs, 4095.f, 2.f)
+    fS2RevSend *= fS2RevSend;
     if(!bMuteS2) rompler[1].Process(s2_out, 32);
     else{
         memset(s2_out, 0, 32*sizeof(float));
@@ -318,6 +334,8 @@ void ctagSoundProcessorDrumRack::Process(const ProcessData &data) {
     MK_INT_PAR_ABS(iS3Brr, s3_brr, 16)
     CONSTRAIN(iS3Brr, 0, 14)
     rompler[2].params.bitReduction = iS3Brr;
+    MK_FLT_PAR_ABS(fS3RevSend, s3_rs, 4095.f, 2.f)
+    fS3RevSend *= fS3RevSend;
     if(!bMuteS3) rompler[2].Process(s3_out, 32);
     else{
         memset(s3_out, 0, 32*sizeof(float));
@@ -356,6 +374,8 @@ void ctagSoundProcessorDrumRack::Process(const ProcessData &data) {
     MK_INT_PAR_ABS(iS4Brr, s4_brr, 16)
     CONSTRAIN(iS4Brr, 0, 14)
     rompler[3].params.bitReduction = iS4Brr;
+    MK_FLT_PAR_ABS(fS4RevSend, s4_rs, 4095.f, 2.f)
+    fS4RevSend *= fS4RevSend;
     if(!bMuteS4) rompler[3].Process(s4_out, 32);
     else{
         memset(s4_out, 0, 32*sizeof(float));
@@ -388,20 +408,42 @@ void ctagSoundProcessorDrumRack::Process(const ProcessData &data) {
         return;
     }
 
+    MK_BOOL_PAR(bRevMute, r_mute)
+    MK_FLT_PAR_ABS(fRevTime, r_time, 4095.f, 1.f)
+    MK_FLT_PAR_ABS(fRevLP, r_lp, 4095.f, 1.f)
+    MK_FLT_PAR_ABS(fRevLev, r_lev, 4095.f, 2.f)
+    fRevLev *= fRevLev;
+    MK_FLT_PAR_ABS(fRevDiff, r_diff, 4095.f, 1.f)
+    reverb.set_time(fRevTime);
+    reverb.set_diffusion(fRevDiff);
+    reverb.set_lp(fRevLP);
+
+
     // render final buffer
     for(int i=0;i<32;i++){
         float fVal_l;
         float fVal_r;
+        float fx1;
         fVal_l = abd_out[i] * fABLev * (1.f-fABPan);
+        fx1 = abd_out[i] * fABRevSend;
         fVal_l += asd_out[i] * fASLev * (1.f-fASPan);
+        fx1 += asd_out[i] * fASRevSend;
         fVal_l += dbd_out[i] * fDBLev * (1.f-fDBPan);
+        fx1 += dbd_out[i] * fDBRevSend;
         fVal_l += dsd_out[i] * fDSLev * (1.f-fDSPan);
+        fx1 += dsd_out[i] * fDSRevSend;
         fVal_l += hh1_out[i] * fHH1Lev * (1.f-fHH1Pan);
+        fx1 += hh1_out[i] * fHH1RevSend;
         fVal_l += hh2_out[i] * fHH2Lev * (1.f-fHH2Pan);
+        fx1 += hh2_out[i] * fHH2RevSend;
         fVal_l += s1_out[i] * fS1Lev * (1.f-fS1Pan);
+        fx1 += s1_out[i] * fS1RevSend;
         fVal_l += s2_out[i] * fS2Lev * (1.f-fS2Pan);
+        fx1 += s2_out[i] * fS2RevSend;
         fVal_l += s3_out[i] * fS3Lev * (1.f-fS3Pan);
+        fx1 += s3_out[i] * fS3RevSend;
         fVal_l += s4_out[i] * fS4Lev * (1.f-fS4Pan);
+        fx1 += s4_out[i] * fS4RevSend;
         fVal_r = abd_out[i] * fABLev * fABPan;
         fVal_r += asd_out[i] * fASLev * fASPan;
         fVal_r += dbd_out[i] * fDBLev * fDBPan;
@@ -412,6 +454,7 @@ void ctagSoundProcessorDrumRack::Process(const ProcessData &data) {
         fVal_r += s2_out[i] * fS2Lev * fS2Pan;
         fVal_r += s3_out[i] * fS3Lev * fS3Pan;
         fVal_r += s4_out[i] * fS4Lev * fS4Pan;
+        // compressor
         float dry_l = fVal_l;
         float dry_r = fVal_r;
         if(bSideChainLPF){
@@ -421,14 +464,26 @@ void ctagSoundProcessorDrumRack::Process(const ProcessData &data) {
             side_l = fVal_l;
             side_r = fVal_r;
         }
+        // reverb
+        float rev_l, rev_r;
+        fx1 = stmlib::SoftClip(fx1);
+        reverb.Process(fx1, rev_l, rev_r);
+        rev_l *= fRevLev;
+        rev_r *= fRevLev;
         side_l = fabsf(side_l);
         side_r = fabsf(side_r);
         float side = std::max(side_l, side_r);
         sumCompressor.process(fVal_l, fVal_r, side);
         fVal_l = fVal_l * fCompMUPGain * fCompMix + dry_l * (1.f-fCompMix);
         fVal_r = fVal_r * fCompMUPGain * fCompMix + dry_r * (1.f-fCompMix);
-        data.buf[i*2] = fVal_l * fMixLevel;
-        data.buf[i*2+1] = fVal_r * fMixLevel;
+        if(!bRevMute){
+            fVal_l += rev_l;
+            fVal_r += rev_r;
+        }
+        fVal_l *= fMixLevel;
+        fVal_r *= fMixLevel;
+        data.buf[i*2] = fVal_l;
+        data.buf[i*2+1] = fVal_r;
     }
 }
 
@@ -437,9 +492,6 @@ void ctagSoundProcessorDrumRack::Init(std::size_t blockSize, void *blockPtr) {
     knowYourself();
     model = std::make_unique<ctagSPDataModel>(id, isStereo);
     LoadPreset(0);
-
-    // preload samples
-    sampleRom.BufferInSPIRAM();
 
     // init compressor
     sumCompressor.setSampleRate(44100.f);
@@ -453,16 +505,23 @@ void ctagSoundProcessorDrumRack::Init(std::size_t blockSize, void *blockPtr) {
     hh1.Init();
     hh2.Init();
 
+
+    // check if blockMem is large enough
+    // blockMem is used just like larger blocks of heap memory
+    assert(blockSize >= 16384*2);
+    reverb.Init((uint16_t *)blockPtr);
+    blockPtr = static_cast<uint8_t *>(blockPtr) + 16384*2;
+    blockSize -= 16384*2;
+    reverb.set_diffusion(0.625f);
+    reverb.set_lp(0.7f);
+    reverb.set_time(.5f);
+
+    // preload samples
+    sampleRom.BufferInSPIRAM();
     // init romplers
     for(auto &r : rompler){
         r.Init(44100.f);
     }
-
-
-    // check if blockMem is large enough
-    // blockMem is used just like larger blocks of heap memory
-    // assert(blockSize >= memLen);
-    // if memory larger than blockMem is needed, use heap_caps_malloc() instead with MALLOC_CAPS_SPIRAM
 }
 
 // no ctor, use Init() instead, is called from factory after successful creation
@@ -483,6 +542,10 @@ void ctagSoundProcessorDrumRack::knowYourself(){
 	pMapCv.emplace("ab_lev", [&](const int val){ cv_ab_lev = val;});
 	pMapPar.emplace("ab_pan", [&](const int val){ ab_pan = val;});
 	pMapCv.emplace("ab_pan", [&](const int val){ cv_ab_pan = val;});
+	pMapPar.emplace("ab_rs", [&](const int val){ ab_rs = val;});
+	pMapCv.emplace("ab_rs", [&](const int val){ cv_ab_rs = val;});
+	pMapPar.emplace("ab_ds", [&](const int val){ ab_ds = val;});
+	pMapCv.emplace("ab_ds", [&](const int val){ cv_ab_ds = val;});
 	pMapPar.emplace("ab_accent", [&](const int val){ ab_accent = val;});
 	pMapCv.emplace("ab_accent", [&](const int val){ cv_ab_accent = val;});
 	pMapPar.emplace("ab_f0", [&](const int val){ ab_f0 = val;});
@@ -503,6 +566,10 @@ void ctagSoundProcessorDrumRack::knowYourself(){
 	pMapCv.emplace("db_lev", [&](const int val){ cv_db_lev = val;});
 	pMapPar.emplace("db_pan", [&](const int val){ db_pan = val;});
 	pMapCv.emplace("db_pan", [&](const int val){ cv_db_pan = val;});
+	pMapPar.emplace("db_rs", [&](const int val){ db_rs = val;});
+	pMapCv.emplace("db_rs", [&](const int val){ cv_db_rs = val;});
+	pMapPar.emplace("db_ds", [&](const int val){ db_ds = val;});
+	pMapCv.emplace("db_ds", [&](const int val){ cv_db_ds = val;});
 	pMapPar.emplace("db_accent", [&](const int val){ db_accent = val;});
 	pMapCv.emplace("db_accent", [&](const int val){ cv_db_accent = val;});
 	pMapPar.emplace("db_f0", [&](const int val){ db_f0 = val;});
@@ -525,6 +592,10 @@ void ctagSoundProcessorDrumRack::knowYourself(){
 	pMapCv.emplace("as_lev", [&](const int val){ cv_as_lev = val;});
 	pMapPar.emplace("as_pan", [&](const int val){ as_pan = val;});
 	pMapCv.emplace("as_pan", [&](const int val){ cv_as_pan = val;});
+	pMapPar.emplace("as_rs", [&](const int val){ as_rs = val;});
+	pMapCv.emplace("as_rs", [&](const int val){ cv_as_rs = val;});
+	pMapPar.emplace("as_ds", [&](const int val){ as_ds = val;});
+	pMapCv.emplace("as_ds", [&](const int val){ cv_as_ds = val;});
 	pMapPar.emplace("as_accent", [&](const int val){ as_accent = val;});
 	pMapCv.emplace("as_accent", [&](const int val){ cv_as_accent = val;});
 	pMapPar.emplace("as_f0", [&](const int val){ as_f0 = val;});
@@ -543,6 +614,10 @@ void ctagSoundProcessorDrumRack::knowYourself(){
 	pMapCv.emplace("ds_lev", [&](const int val){ cv_ds_lev = val;});
 	pMapPar.emplace("ds_pan", [&](const int val){ ds_pan = val;});
 	pMapCv.emplace("ds_pan", [&](const int val){ cv_ds_pan = val;});
+	pMapPar.emplace("ds_rs", [&](const int val){ ds_rs = val;});
+	pMapCv.emplace("ds_rs", [&](const int val){ cv_ds_rs = val;});
+	pMapPar.emplace("ds_ds", [&](const int val){ ds_ds = val;});
+	pMapCv.emplace("ds_ds", [&](const int val){ cv_ds_ds = val;});
 	pMapPar.emplace("ds_accent", [&](const int val){ ds_accent = val;});
 	pMapCv.emplace("ds_accent", [&](const int val){ cv_ds_accent = val;});
 	pMapPar.emplace("ds_f0", [&](const int val){ ds_f0 = val;});
@@ -561,6 +636,10 @@ void ctagSoundProcessorDrumRack::knowYourself(){
 	pMapCv.emplace("hh1_lev", [&](const int val){ cv_hh1_lev = val;});
 	pMapPar.emplace("hh1_pan", [&](const int val){ hh1_pan = val;});
 	pMapCv.emplace("hh1_pan", [&](const int val){ cv_hh1_pan = val;});
+	pMapPar.emplace("hh1_rs", [&](const int val){ hh1_rs = val;});
+	pMapCv.emplace("hh1_rs", [&](const int val){ cv_hh1_rs = val;});
+	pMapPar.emplace("hh1_ds", [&](const int val){ hh1_ds = val;});
+	pMapCv.emplace("hh1_ds", [&](const int val){ cv_hh1_ds = val;});
 	pMapPar.emplace("hh1_accent", [&](const int val){ hh1_accent = val;});
 	pMapCv.emplace("hh1_accent", [&](const int val){ cv_hh1_accent = val;});
 	pMapPar.emplace("hh1_f0", [&](const int val){ hh1_f0 = val;});
@@ -579,6 +658,10 @@ void ctagSoundProcessorDrumRack::knowYourself(){
 	pMapCv.emplace("hh2_lev", [&](const int val){ cv_hh2_lev = val;});
 	pMapPar.emplace("hh2_pan", [&](const int val){ hh2_pan = val;});
 	pMapCv.emplace("hh2_pan", [&](const int val){ cv_hh2_pan = val;});
+	pMapPar.emplace("hh2_rs", [&](const int val){ hh2_rs = val;});
+	pMapCv.emplace("hh2_rs", [&](const int val){ cv_hh2_rs = val;});
+	pMapPar.emplace("hh2_ds", [&](const int val){ hh2_ds = val;});
+	pMapCv.emplace("hh2_ds", [&](const int val){ cv_hh2_ds = val;});
 	pMapPar.emplace("hh2_accent", [&](const int val){ hh2_accent = val;});
 	pMapCv.emplace("hh2_accent", [&](const int val){ cv_hh2_accent = val;});
 	pMapPar.emplace("hh2_f0", [&](const int val){ hh2_f0 = val;});
@@ -597,6 +680,10 @@ void ctagSoundProcessorDrumRack::knowYourself(){
 	pMapCv.emplace("s1_lev", [&](const int val){ cv_s1_lev = val;});
 	pMapPar.emplace("s1_pan", [&](const int val){ s1_pan = val;});
 	pMapCv.emplace("s1_pan", [&](const int val){ cv_s1_pan = val;});
+	pMapPar.emplace("s1_rs", [&](const int val){ s1_rs = val;});
+	pMapCv.emplace("s1_rs", [&](const int val){ cv_s1_rs = val;});
+	pMapPar.emplace("s1_ds", [&](const int val){ s1_ds = val;});
+	pMapCv.emplace("s1_ds", [&](const int val){ cv_s1_ds = val;});
 	pMapPar.emplace("s1_speed", [&](const int val){ s1_speed = val;});
 	pMapCv.emplace("s1_speed", [&](const int val){ cv_s1_speed = val;});
 	pMapPar.emplace("s1_bank", [&](const int val){ s1_bank = val;});
@@ -629,6 +716,10 @@ void ctagSoundProcessorDrumRack::knowYourself(){
 	pMapCv.emplace("s2_lev", [&](const int val){ cv_s2_lev = val;});
 	pMapPar.emplace("s2_pan", [&](const int val){ s2_pan = val;});
 	pMapCv.emplace("s2_pan", [&](const int val){ cv_s2_pan = val;});
+	pMapPar.emplace("s2_rs", [&](const int val){ s2_rs = val;});
+	pMapCv.emplace("s2_rs", [&](const int val){ cv_s2_rs = val;});
+	pMapPar.emplace("s2_ds", [&](const int val){ s2_ds = val;});
+	pMapCv.emplace("s2_ds", [&](const int val){ cv_s2_ds = val;});
 	pMapPar.emplace("s2_speed", [&](const int val){ s2_speed = val;});
 	pMapCv.emplace("s2_speed", [&](const int val){ cv_s2_speed = val;});
 	pMapPar.emplace("s2_bank", [&](const int val){ s2_bank = val;});
@@ -661,6 +752,10 @@ void ctagSoundProcessorDrumRack::knowYourself(){
 	pMapCv.emplace("s3_lev", [&](const int val){ cv_s3_lev = val;});
 	pMapPar.emplace("s3_pan", [&](const int val){ s3_pan = val;});
 	pMapCv.emplace("s3_pan", [&](const int val){ cv_s3_pan = val;});
+	pMapPar.emplace("s3_rs", [&](const int val){ s3_rs = val;});
+	pMapCv.emplace("s3_rs", [&](const int val){ cv_s3_rs = val;});
+	pMapPar.emplace("s3_ds", [&](const int val){ s3_ds = val;});
+	pMapCv.emplace("s3_ds", [&](const int val){ cv_s3_ds = val;});
 	pMapPar.emplace("s3_speed", [&](const int val){ s3_speed = val;});
 	pMapCv.emplace("s3_speed", [&](const int val){ cv_s3_speed = val;});
 	pMapPar.emplace("s3_bank", [&](const int val){ s3_bank = val;});
@@ -693,6 +788,10 @@ void ctagSoundProcessorDrumRack::knowYourself(){
 	pMapCv.emplace("s4_lev", [&](const int val){ cv_s4_lev = val;});
 	pMapPar.emplace("s4_pan", [&](const int val){ s4_pan = val;});
 	pMapCv.emplace("s4_pan", [&](const int val){ cv_s4_pan = val;});
+	pMapPar.emplace("s4_rs", [&](const int val){ s4_rs = val;});
+	pMapCv.emplace("s4_rs", [&](const int val){ cv_s4_rs = val;});
+	pMapPar.emplace("s4_ds", [&](const int val){ s4_ds = val;});
+	pMapCv.emplace("s4_ds", [&](const int val){ cv_s4_ds = val;});
 	pMapPar.emplace("s4_speed", [&](const int val){ s4_speed = val;});
 	pMapCv.emplace("s4_speed", [&](const int val){ cv_s4_speed = val;});
 	pMapPar.emplace("s4_bank", [&](const int val){ s4_bank = val;});
@@ -717,6 +816,24 @@ void ctagSoundProcessorDrumRack::knowYourself(){
 	pMapCv.emplace("s4_eg2fm", [&](const int val){ cv_s4_eg2fm = val;});
 	pMapPar.emplace("s4_brr", [&](const int val){ s4_brr = val;});
 	pMapCv.emplace("s4_brr", [&](const int val){ cv_s4_brr = val;});
+	pMapPar.emplace("r_mute", [&](const int val){ r_mute = val;});
+	pMapTrig.emplace("r_mute", [&](const int val){ trig_r_mute = val;});
+	pMapPar.emplace("r_time", [&](const int val){ r_time = val;});
+	pMapCv.emplace("r_time", [&](const int val){ cv_r_time = val;});
+	pMapPar.emplace("r_lev", [&](const int val){ r_lev = val;});
+	pMapCv.emplace("r_lev", [&](const int val){ cv_r_lev = val;});
+	pMapPar.emplace("r_lp", [&](const int val){ r_lp = val;});
+	pMapCv.emplace("r_lp", [&](const int val){ cv_r_lp = val;});
+	pMapPar.emplace("r_diff", [&](const int val){ r_diff = val;});
+	pMapCv.emplace("r_diff", [&](const int val){ cv_r_diff = val;});
+	pMapPar.emplace("d_time", [&](const int val){ d_time = val;});
+	pMapCv.emplace("d_time", [&](const int val){ cv_d_time = val;});
+	pMapPar.emplace("d_fb", [&](const int val){ d_fb = val;});
+	pMapCv.emplace("d_fb", [&](const int val){ cv_d_fb = val;});
+	pMapPar.emplace("d_lp", [&](const int val){ d_lp = val;});
+	pMapCv.emplace("d_lp", [&](const int val){ cv_d_lp = val;});
+	pMapPar.emplace("d_width", [&](const int val){ d_width = val;});
+	pMapCv.emplace("d_width", [&](const int val){ cv_d_width = val;});
 	pMapPar.emplace("c_thres", [&](const int val){ c_thres = val;});
 	pMapCv.emplace("c_thres", [&](const int val){ cv_c_thres = val;});
 	pMapPar.emplace("c_ratio", [&](const int val){ c_ratio = val;});

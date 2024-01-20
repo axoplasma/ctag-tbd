@@ -8,6 +8,7 @@
 #include "synthesis/RomplerVoiceMinimal.hpp"
 #include "helpers/ctagSampleRom.hpp"
 #include "SimpleComp/SimpleComp.h"
+#include "mifx/reverb2.h"
 
 namespace CTAG {
     namespace SP {
@@ -20,6 +21,9 @@ namespace CTAG {
 
         private:
             virtual void knowYourself() override;
+
+            // reverb
+            mifx::Reverb2 reverb;
 
             // compressor
             chunkware_simple::SimpleComp sumCompressor;
@@ -67,6 +71,8 @@ namespace CTAG {
 	atomic<int32_t> ab_trigger, trig_ab_trigger;
 	atomic<int32_t> ab_lev, cv_ab_lev;
 	atomic<int32_t> ab_pan, cv_ab_pan;
+	atomic<int32_t> ab_rs, cv_ab_rs;
+	atomic<int32_t> ab_ds, cv_ab_ds;
 	atomic<int32_t> ab_accent, cv_ab_accent;
 	atomic<int32_t> ab_f0, cv_ab_f0;
 	atomic<int32_t> ab_tone, cv_ab_tone;
@@ -77,6 +83,8 @@ namespace CTAG {
 	atomic<int32_t> db_trigger, trig_db_trigger;
 	atomic<int32_t> db_lev, cv_db_lev;
 	atomic<int32_t> db_pan, cv_db_pan;
+	atomic<int32_t> db_rs, cv_db_rs;
+	atomic<int32_t> db_ds, cv_db_ds;
 	atomic<int32_t> db_accent, cv_db_accent;
 	atomic<int32_t> db_f0, cv_db_f0;
 	atomic<int32_t> db_tone, cv_db_tone;
@@ -88,6 +96,8 @@ namespace CTAG {
 	atomic<int32_t> as_trigger, trig_as_trigger;
 	atomic<int32_t> as_lev, cv_as_lev;
 	atomic<int32_t> as_pan, cv_as_pan;
+	atomic<int32_t> as_rs, cv_as_rs;
+	atomic<int32_t> as_ds, cv_as_ds;
 	atomic<int32_t> as_accent, cv_as_accent;
 	atomic<int32_t> as_f0, cv_as_f0;
 	atomic<int32_t> as_tone, cv_as_tone;
@@ -97,6 +107,8 @@ namespace CTAG {
 	atomic<int32_t> ds_trigger, trig_ds_trigger;
 	atomic<int32_t> ds_lev, cv_ds_lev;
 	atomic<int32_t> ds_pan, cv_ds_pan;
+	atomic<int32_t> ds_rs, cv_ds_rs;
+	atomic<int32_t> ds_ds, cv_ds_ds;
 	atomic<int32_t> ds_accent, cv_ds_accent;
 	atomic<int32_t> ds_f0, cv_ds_f0;
 	atomic<int32_t> ds_fm_amt, cv_ds_fm_amt;
@@ -106,6 +118,8 @@ namespace CTAG {
 	atomic<int32_t> hh1_trigger, trig_hh1_trigger;
 	atomic<int32_t> hh1_lev, cv_hh1_lev;
 	atomic<int32_t> hh1_pan, cv_hh1_pan;
+	atomic<int32_t> hh1_rs, cv_hh1_rs;
+	atomic<int32_t> hh1_ds, cv_hh1_ds;
 	atomic<int32_t> hh1_accent, cv_hh1_accent;
 	atomic<int32_t> hh1_f0, cv_hh1_f0;
 	atomic<int32_t> hh1_tone, cv_hh1_tone;
@@ -115,6 +129,8 @@ namespace CTAG {
 	atomic<int32_t> hh2_trigger, trig_hh2_trigger;
 	atomic<int32_t> hh2_lev, cv_hh2_lev;
 	atomic<int32_t> hh2_pan, cv_hh2_pan;
+	atomic<int32_t> hh2_rs, cv_hh2_rs;
+	atomic<int32_t> hh2_ds, cv_hh2_ds;
 	atomic<int32_t> hh2_accent, cv_hh2_accent;
 	atomic<int32_t> hh2_f0, cv_hh2_f0;
 	atomic<int32_t> hh2_tone, cv_hh2_tone;
@@ -124,6 +140,8 @@ namespace CTAG {
 	atomic<int32_t> s1_gate, trig_s1_gate;
 	atomic<int32_t> s1_lev, cv_s1_lev;
 	atomic<int32_t> s1_pan, cv_s1_pan;
+	atomic<int32_t> s1_rs, cv_s1_rs;
+	atomic<int32_t> s1_ds, cv_s1_ds;
 	atomic<int32_t> s1_speed, cv_s1_speed;
 	atomic<int32_t> s1_bank, cv_s1_bank;
 	atomic<int32_t> s1_slice, cv_s1_slice;
@@ -140,6 +158,8 @@ namespace CTAG {
 	atomic<int32_t> s2_gate, trig_s2_gate;
 	atomic<int32_t> s2_lev, cv_s2_lev;
 	atomic<int32_t> s2_pan, cv_s2_pan;
+	atomic<int32_t> s2_rs, cv_s2_rs;
+	atomic<int32_t> s2_ds, cv_s2_ds;
 	atomic<int32_t> s2_speed, cv_s2_speed;
 	atomic<int32_t> s2_bank, cv_s2_bank;
 	atomic<int32_t> s2_slice, cv_s2_slice;
@@ -156,6 +176,8 @@ namespace CTAG {
 	atomic<int32_t> s3_gate, trig_s3_gate;
 	atomic<int32_t> s3_lev, cv_s3_lev;
 	atomic<int32_t> s3_pan, cv_s3_pan;
+	atomic<int32_t> s3_rs, cv_s3_rs;
+	atomic<int32_t> s3_ds, cv_s3_ds;
 	atomic<int32_t> s3_speed, cv_s3_speed;
 	atomic<int32_t> s3_bank, cv_s3_bank;
 	atomic<int32_t> s3_slice, cv_s3_slice;
@@ -172,6 +194,8 @@ namespace CTAG {
 	atomic<int32_t> s4_gate, trig_s4_gate;
 	atomic<int32_t> s4_lev, cv_s4_lev;
 	atomic<int32_t> s4_pan, cv_s4_pan;
+	atomic<int32_t> s4_rs, cv_s4_rs;
+	atomic<int32_t> s4_ds, cv_s4_ds;
 	atomic<int32_t> s4_speed, cv_s4_speed;
 	atomic<int32_t> s4_bank, cv_s4_bank;
 	atomic<int32_t> s4_slice, cv_s4_slice;
@@ -184,6 +208,15 @@ namespace CTAG {
 	atomic<int32_t> s4_dcy, cv_s4_dcy;
 	atomic<int32_t> s4_eg2fm, cv_s4_eg2fm;
 	atomic<int32_t> s4_brr, cv_s4_brr;
+	atomic<int32_t> r_mute, trig_r_mute;
+	atomic<int32_t> r_time, cv_r_time;
+	atomic<int32_t> r_lev, cv_r_lev;
+	atomic<int32_t> r_lp, cv_r_lp;
+	atomic<int32_t> r_diff, cv_r_diff;
+	atomic<int32_t> d_time, cv_d_time;
+	atomic<int32_t> d_fb, cv_d_fb;
+	atomic<int32_t> d_lp, cv_d_lp;
+	atomic<int32_t> d_width, cv_d_width;
 	atomic<int32_t> c_thres, cv_c_thres;
 	atomic<int32_t> c_ratio, cv_c_ratio;
 	atomic<int32_t> c_atk, cv_c_atk;
